@@ -1,8 +1,23 @@
 import chromadb
 from sentence_transformers import SentenceTransformer
 
-# Load embedding model
-model = SentenceTransformer("all-MiniLM-L6-v2")
+# Global model variable
+model = None
+
+
+def get_model():
+    """
+    Load the embedding model only when needed.
+    """
+    global model
+
+    if model is None:
+        print("Loading retrieval embedding model...")
+        model = SentenceTransformer("all-MiniLM-L6-v2")
+        print("Retrieval embedding model loaded.")
+
+    return model
+
 
 # Connect to ChromaDB
 client = chromadb.PersistentClient(path="chroma_db")
@@ -17,7 +32,9 @@ def retrieve_chunks(query, top_k=5):
     Retrieve relevant document chunks along with IDs.
     """
 
-    query_embedding = model.encode(query).tolist()
+    embedding_model = get_model()
+
+    query_embedding = embedding_model.encode(query).tolist()
 
     results = collection.query(
         query_embeddings=[query_embedding],
