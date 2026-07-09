@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LexiMind AI - Legal Document Analysis</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ==========================
+         Sidebar
+    =========================== -->
+
+    <aside class="sidebar">
+
+        <h2>⚖️ LexiMind AI</h2>
+
+        <div class="upload-box">
+
+            <input
+                type="file"
+                id="pdfFile"
+                accept=".pdf">
+
+            <button id="uploadBtn">
+                Upload PDF
+            </button>
+
+        </div>
+
+        <hr>
+
+        <button id="summaryBtn">
+            📄 Summary
+        </button>
+
+        <button id="riskBtn">
+            ⚠️ Risk Analysis
+        </button>
+
+        <button id="clausesBtn">
+            📌 Important Clauses
+        </button>
+
+        <button id="datesBtn">
+            📅 Key Dates
+        </button>
+
+    </aside>
+
+
+    <!-- ==========================
+         Main Content
+    =========================== -->
+
+    <div class="main-content">
+
+        <!-- PDF Viewer -->
+
+        <div class="pdf-viewer">
+
+            <div class="viewer-header">
+
+                <h3>📄 Document Viewer</h3>
+
+            </div>
+
+            <iframe
+                id="pdfViewer"
+                src=""
+                title="PDF Viewer">
+            </iframe>
+
+        </div>
+
+
+        <!-- Chat Section -->
+
+        <main class="chat-container">
+
+            <div id="chat-box">
+
+                <div class="bot-message">
+
+                    <strong>👋 Welcome to LexiMind AI</strong>
+
+                    <br><br>
+
+                    Upload a legal PDF to begin analysis.
+
+                </div>
+
+            </div>
+
+
+            <!-- Suggested Questions -->
+
+            <div
+                id="suggestions"
+                class="suggestions"
+                style="display:none;">
+
+                <h4>💡 Suggested Questions</h4>
+
+                <button class="suggestion-btn">
+                    📄 Summarize this document
+                </button>
+
+                <button class="suggestion-btn">
+                    ⚠️ What are the important risks?
+                </button>
+
+                <button class="suggestion-btn">
+                    📌 List important clauses
+                </button>
+
+                <button class="suggestion-btn">
+                    📅 Extract all important dates
+                </button>
+
+                <button class="suggestion-btn">
+                    👥 Who are the parties involved?
+                </button>
+
+            </div>
+
+
+            <!-- Chat Input -->
+
+            <div class="input-area">
+
+                <input
+                    type="text"
+                    id="question"
+                    placeholder="Ask anything about the uploaded document...">
+
+                <button id="sendBtn">
+                    Send
+                </button>
+
+            </div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<!-- Markdown -->
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<!-- JavaScript -->
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>
