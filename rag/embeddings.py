@@ -1,29 +1,26 @@
 from sentence_transformers import SentenceTransformer
 
-# Global model variable
-model = None
+_model = None
 
 
 def get_model():
-    """
-    Load the embedding model only when needed.
-    """
-    global model
+    global _model
 
-    if model is None:
+    if _model is None:
         print("Loading embedding model...")
-        model = SentenceTransformer("all-MiniLM-L6-v2")
+        _model = SentenceTransformer("all-MiniLM-L6-v2")
         print("Embedding model loaded.")
 
-    return model
+    return _model
 
 
 def create_embeddings(chunks):
-    """
-    Convert text chunks into vector embeddings.
-    """
-    embedding_model = get_model()
+    model = get_model()
 
-    embeddings = embedding_model.encode(chunks)
+    embeddings = model.encode(
+        chunks,
+        batch_size=8,
+        show_progress_bar=False
+    )
 
     return embeddings

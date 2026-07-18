@@ -17,7 +17,8 @@ const suggestions = document.getElementById("suggestions");
 // Upload PDF
 // =====================================
 
-uploadBtn.addEventListener("click", async () => {
+
+   uploadBtn.addEventListener("click", async () => {
 
     if (fileInput.files.length === 0) {
         alert("Please choose a PDF.");
@@ -29,52 +30,51 @@ uploadBtn.addEventListener("click", async () => {
 
     try {
 
+        console.log("Uploading PDF...");
+
         const response = await fetch("/upload", {
             method: "POST",
             body: formData
         });
 
-        const data = await response.json();
+        console.log("Status:", response.status);
 
-        if (data.error) {
-            alert(data.error);
+        const text = await response.text();
+
+        console.log("Server Response:", text);
+
+        let data;
+
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            alert("Server returned invalid response.\n\n" + text);
             return;
         }
 
-        // Show uploaded PDF
+        if (!response.ok) {
+            alert(data.error || "Upload failed");
+            return;
+        }
+
         pdfViewer.src = data.pdf_url;
 
-        // Show suggestions
         suggestions.style.display = "block";
 
-        // Success message
         chatBox.innerHTML += `
-            <div class="bot-message">
+    <div class="bot-message">
+        <strong>✅ Document Uploaded Successfully</strong>
+        <br><br>
+        <b>File:</b> ${data.filename}<br>
+        <b>Size:</b> ${data.size} bytes
+    </div>
+`;
 
-                <strong>✅ Document Uploaded Successfully</strong>
+    } catch (err) {
 
-                <br><br>
+        console.error(err);
 
-                <b>File:</b> ${data.filename}<br>
-                <b>Characters:</b> ${data.characters}<br>
-                <b>Chunks:</b> ${data.chunks}<br>
-
-                <br>
-
-                Your document is indexed and ready for AI analysis.
-
-            </div>
-        `;
-
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-    }
-
-    catch (error) {
-
-        console.error(error);
-
-        alert("Failed to upload PDF.");
+        alert("Network Error:\n\n" + err);
 
     }
 
